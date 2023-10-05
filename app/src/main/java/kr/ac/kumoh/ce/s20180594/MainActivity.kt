@@ -22,11 +22,17 @@ class MainActivity : AppCompatActivity() {
         txtNum = arrayOf(main.num1,main.num2,main.num3,main.num4,main.num5,main.num6)
 
         model = ViewModelProvider(this)[LottoViewModel::class.java]
-        txtNum.forEachIndexed{index,textView->textView?.text = model.numbers[index].toString()}
+
+        model.numbers.observe(this,{
+            txtNum.forEachIndexed{index,textView->
+                textView?.text = model.numbers.value!![index].toString()}
+        })
+
+        //txtNum.forEachIndexed{index,textView->textView?.text = model.numbers.value!![index].toString()}
         main.btnGenerate.setOnClickListener{
             model.generate()
             txtNum.forEachIndexed { index, textView ->
-                textView?.text = model.numbers[index].toString()
+                textView?.text = model.numbers.value!![index].toString()
             }
 
             //main.num1.text = Random.nextInt(1,46).toString()
